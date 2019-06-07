@@ -25,13 +25,13 @@ class CoconutPicker extends CWidget
     public $longitudeInputId;
 
     /** @var float Default latitude for picked coordinates, by default set to Kiev */
-    public $defaultLatitude;
+    public $defaultLatitude = 51.5287352;
 
     /** @var float Default longitude for picked coordinates, by default set to Kiev */
-    public $defaultLongitude;
+    public $defaultLongitude = -0.3817841;
 
     /** @var int Map zoom level */
-    public $zoomLevel;
+    public $zoomLevel = 10;
 
 
     /** @var string Path to assets directory published in init() */
@@ -61,7 +61,8 @@ class CoconutPicker extends CWidget
     {
         $cs = Yii::app()->getClientScript();
 
-       /* $cs->registerCoreScript('jquery');*/
+        /* $cs->registerCoreScript('jquery');*/
+        //Assign server side value to script
         $cs->registerScript('prepareMapData', "
            var defaultLatitude = $this->defaultLatitude;
            var defaultLongitude = $this->defaultLongitude;
@@ -69,10 +70,13 @@ class CoconutPicker extends CWidget
            var latitudeInputId = '$this->latitudeInputId';
            var longitudeInputId = '$this->longitudeInputId';
         ", CClientScript::POS_BEGIN);
+
+        //Register js and css
+        $cs->registerScriptFile("https://maps.googleapis.com/maps/api/js?key=" . $this->apiKey, CClientScript::POS_BEGIN);
         $cs->registerScriptFile($this->assetsDir . '/map.js', CClientScript::POS_END);
         $cs->registerCssFile($this->assetsDir . '/map.css');
-        $cs->registerScriptFile("https://maps.googleapis.com/maps/api/js?key=" . $this->apiKey);
 
+        //Render map container div
         echo '<div id="map"></div>';
     }
 

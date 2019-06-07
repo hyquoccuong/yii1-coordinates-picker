@@ -20,31 +20,20 @@ function initMap() {
  
     //Create the map object.
     map = new google.maps.Map(document.getElementById('map'), options);
+
+    //Add default marker
+    //https://developers.google.com/maps/documentation/javascript/markers
+
+    //Generate default
+    generateMarker(centerOfMap, 'You are here!');
+    //Get the marker's location.
+    markerLocation();
  
     //Listen for any clicks on the map.
     google.maps.event.addListener(map, 'click', function(event) {
-
-
         //Get the location that the user clicked.
         var clickedLocation = event.latLng;
-        console.log(clickedLocation);
-
-        //If the marker hasn't been added.
-        if(marker === false){
-            //Create the marker.
-            marker = new google.maps.Marker({
-                position: clickedLocation,
-                map: map,
-                draggable: true //make it draggable
-            });
-            //Listen for drag events!
-            google.maps.event.addListener(marker, 'dragend', function(event){
-                markerLocation();
-            });
-        } else{
-            //Marker has already been added, so just change its location.
-            marker.setPosition(clickedLocation);
-        }
+        generateMarker(clickedLocation);
         //Get the marker's location.
         markerLocation();
     });
@@ -55,10 +44,29 @@ function initMap() {
 function markerLocation(){
     //Get location.
     var currentLocation = marker.getPosition();
-    console.log("lat"+currentLocation.lat());
     //Add lat and lng values to a field that we can save.
     document.getElementById(latitudeInputId).value = currentLocation.lat(); //latitude
     document.getElementById(longitudeInputId).value = currentLocation.lng(); //longitude
+}
+
+function generateMarker(position, markerTitle = '') {
+    //If the marker hasn't been added.
+    if(marker === false){
+        //Create the marker.
+        marker = new google.maps.Marker({
+            position: position,
+            map: map,
+            draggable: true, //make it draggable
+            title: markerTitle
+        });
+        //Listen for drag events!
+        google.maps.event.addListener(marker, 'dragend', function(event){
+            markerLocation();
+        });
+    } else{
+        //Marker has already been added, so just change its location.
+        marker.setPosition(position);
+    }
 }
         
         
