@@ -6,6 +6,9 @@
  */
 class CoconutPicker extends CWidget
 {
+    const DEFAULT_LATITUDE = 51.5287352;
+    const DEFAULT_LONGITUDE = -0.3817841;
+
     /** @var CModel model */
     public $model;
 
@@ -25,10 +28,10 @@ class CoconutPicker extends CWidget
     public $longitudeInputId;
 
     /** @var float Default latitude for picked coordinates, by default set to Kiev */
-    public $defaultLatitude = 51.5287352;
+    public $defaultLatitude;
 
     /** @var float Default longitude for picked coordinates, by default set to Kiev */
-    public $defaultLongitude = -0.3817841;
+    public $defaultLongitude;
 
     /** @var int Map zoom level */
     public $zoomLevel = 10;
@@ -43,6 +46,14 @@ class CoconutPicker extends CWidget
      */
     public function init()
     {
+        if (!isset($this->defaultLatitude) || $this->defaultLatitude == null || strlen($this->latitudeAttribute) == 0) {
+            $this->defaultLatitude = self::DEFAULT_LATITUDE;
+        }
+
+        if (!isset($this->defaultLongitude) || $this->defaultLongitude == null || strlen($this->defaultLongitude) == 0) {
+            $this->defaultLongitude = self::DEFAULT_LONGITUDE;
+        }
+
         $dir = dirname(__FILE__) . '/assets';
         $this->assetsDir = Yii::app()->assetManager->publish($dir);
 
