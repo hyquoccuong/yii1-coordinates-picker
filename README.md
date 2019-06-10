@@ -15,8 +15,10 @@ Download or clone this repository and paste in `/protected/extensions/coconutPic
             'longitudeAttribute' => 'longitude', //latitude field to pass value from picker
             //optional settings
             'zoomLevel' => 12, //default zoom level on map
-            'defaultLatitude' => 21.0227, //default latitude, should load from model if in update form
-            'defaultLongitude' => 105.852, //default longitude, should load from model if in update form
+            'defaultLatitude' => 21.0227, //default latitude when initial
+            'defaultLongitude' => 105.852, //default longitude when initial
+            //'defaultLatitude' => !$model->isNewRecord ? $model->latitude : 51.5287352, //default latitude, loaded from model if in update form
+            //'defaultLongitude' => !$model->isNewRecord ? $model->longitude : -0.3817841, //default longitude, loaded from model if in update form
     ));
     ...
 ```
