@@ -10,7 +10,7 @@ var marker = false; ////Has the user plotted their location marker?
 function initMap() {
  
     //The center location of our map.
-    var centerOfMap = new google.maps.LatLng(defaultLatitude, defaultLongitude);
+    var centerOfMap = new google.maps.LatLng(predefinedLatitude, predefinedLongitude);
 
     //Map options.
     var options = {
@@ -27,13 +27,15 @@ function initMap() {
     //Generate default
     generateMarker(centerOfMap, 'You are here!');
     //Get the marker's location.
-    markerLocation();
- 
+    if (defaultLatitude && defaultLongitude) {
+        markerLocation();
+    }
+
     //Listen for any clicks on the map.
     google.maps.event.addListener(map, 'click', function(event) {
         //Get the location that the user clicked.
         var clickedLocation = event.latLng;
-        generateMarker(clickedLocation);
+        generateMarker(clickedLocation, '');
         //Get the marker's location.
         markerLocation();
     });
@@ -49,7 +51,7 @@ function markerLocation(){
     document.getElementById(longitudeInputId).value = currentLocation.lng(); //longitude
 }
 
-function generateMarker(position, markerTitle = '') {
+function generateMarker(position, markerTitle) {
     //If the marker hasn't been added.
     if(marker === false){
         //Create the marker.

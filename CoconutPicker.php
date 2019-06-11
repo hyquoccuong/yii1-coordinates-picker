@@ -27,15 +27,17 @@ class CoconutPicker extends CWidget
     /** @var string longitude input id */
     public $longitudeInputId;
 
-    /** @var float Default latitude for picked coordinates, by default set to Kiev */
+    /** @var float Default latitude for picked coordinates */
     public $defaultLatitude;
 
-    /** @var float Default longitude for picked coordinates, by default set to Kiev */
+    /** @var float Default longitude for picked coordinates */
     public $defaultLongitude;
 
     /** @var int Map zoom level */
     public $zoomLevel = 10;
 
+    /** @var $mode string */
+    public $displayMode = 'normal'; //normal / modal
 
     /** @var string Path to assets directory published in init() */
     private $assetsDir;
@@ -46,12 +48,15 @@ class CoconutPicker extends CWidget
      */
     public function init()
     {
-        if (!isset($this->defaultLatitude) || $this->defaultLatitude == null || strlen($this->latitudeAttribute) == 0) {
-            $this->defaultLatitude = self::DEFAULT_LATITUDE;
+
+        if (!isset($this->defaultLatitude) || strlen($this->defaultLatitude) == 0
+        ) {
+            $this->defaultLatitude = 'null';
         }
 
-        if (!isset($this->defaultLongitude) || $this->defaultLongitude == null || strlen($this->defaultLongitude) == 0) {
-            $this->defaultLongitude = self::DEFAULT_LONGITUDE;
+        if (!isset($this->defaultLongitude) || strlen($this->defaultLongitude) == 0
+        ) {
+            $this->defaultLongitude = 'null';
         }
 
         $dir = dirname(__FILE__) . '/assets';
@@ -72,11 +77,25 @@ class CoconutPicker extends CWidget
     {
         $cs = Yii::app()->getClientScript();
 
-        /* $cs->registerCoreScript('jquery');*/
+        $predefinedLatitude = $this->defaultLatitude;
+        $predefinedLongitude = $this->defaultLongitude;
+
+
+        if ($this->defaultLatitude == 'null') {
+            $predefinedLatitude = self::DEFAULT_LATITUDE;
+        }
+
+        if ($this->defaultLongitude == 'null') {
+            $predefinedLongitude = self::DEFAULT_LONGITUDE;
+        }
+
+       /* $cs->registerCoreScript('jquery');*/
         //Assign server side value to script
         $cs->registerScript('prepareMapData', "
            var defaultLatitude = $this->defaultLatitude;
            var defaultLongitude = $this->defaultLongitude;
+           var predefinedLatitude = $predefinedLatitude;
+           var predefinedLongitude = $predefinedLongitude;
            var zoomLevel = $this->zoomLevel;
            var latitudeInputId = '$this->latitudeInputId';
            var longitudeInputId = '$this->longitudeInputId';
@@ -87,8 +106,7 @@ class CoconutPicker extends CWidget
         $cs->registerScriptFile($this->assetsDir . '/map.js', CClientScript::POS_END);
         $cs->registerCssFile($this->assetsDir . '/map.css');
 
-        //Render map container div
-        echo '<div id="map"></div>';
+        $this->render('map', ['displayMode' => $this->displayMode]);
     }
 
 }
