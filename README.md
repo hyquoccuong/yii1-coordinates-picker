@@ -8,7 +8,7 @@ Download or clone this repository and paste in `/protected/extensions/coconutPic
 ## Example:
 ```php
     ...
-    $this->widget('ext..coconutPicker.CoconutPicker', array(
+    $this->widget('ext.coconutPicker.CoconutPicker', array(
             'model' => $model,
             'apiKey' => 'Your google map api key',
             'latitudeAttribute' => 'latitude', //latitude field to pass value from picker
