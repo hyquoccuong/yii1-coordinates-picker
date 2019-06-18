@@ -13,7 +13,9 @@ Download or clone this repository and paste in `/protected/extensions/coconutPic
             'apiKey' => 'Your google map api key',
             'latitudeAttribute' => 'latitude', //latitude field to pass value from picker
             'longitudeAttribute' => 'longitude', //latitude field to pass value from picker
-            //optional settings
+             //'latitudeInputId' => 'latitude', //if use custom id for lattitude input
+             //'longitudeInputId' => 'longitude', //if use custom id for longitude input
+             //optional settings
             'zoomLevel' => 12, //default zoom level on map
             'defaultLatitude' => 21.0227, //default latitude when initial
             'defaultLongitude' => 105.852, //default longitude when initial
